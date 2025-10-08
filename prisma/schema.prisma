@@ -8,19 +8,20 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum Role {
-  ADMIN
-  FUNCIONARIO
-}
-
 model User {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
   password  String
   role      Role     @default(FUNCIONARIO)
+  loan      Loan[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  FUNCIONARIO
 }
 
 model ToolType {
@@ -38,6 +39,7 @@ model Tool {
   condition Condition
   typeId    String
   type      ToolType  @relation(fields: [typeId], references: [id])
+  loans     Loan[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -46,4 +48,21 @@ enum Condition {
   NOVO
   USADO
   QUEBRADO
+}
+
+model Loan {
+  id        String     @id @default(uuid())
+  toolId    String
+  tool      Tool       @relation(fields: [toolId], references: [id])
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  startDate DateTime   @default(now())
+  endDate   DateTime?
+  status    LoanStatus @default(EMPRESTADO)
+}
+
+enum LoanStatus {
+  EMPRESTADO
+  DEVOLVIDO
+  DANIFICADO
 }
