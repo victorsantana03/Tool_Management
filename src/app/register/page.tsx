@@ -32,6 +32,8 @@ const Register = () => {
         toast.error(body?.error);
         return;
       }
+
+      toast.success(body.message);
     } catch (error) {
       console.error(error);
     }
