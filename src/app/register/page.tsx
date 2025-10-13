@@ -15,6 +15,7 @@ type RegisterFormValues = {
 };
 
 const Register = () => {
+  //TODO: QUANDO ESTIVER LOGADO NÃO PODE ACESSAR ESSA PAGE
   const { register, handleSubmit } = useForm<RegisterFormValues>();
 
   const onSubmit = async (data: RegisterFormValues) => {

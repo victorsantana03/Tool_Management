@@ -16,6 +16,8 @@ type LoginFormValues = {
 };
 
 const Login = () => {
+  //TODO: QUANDO ESTIVER LOGADO NÃO PODE ACESSAR ESSA PAGE
+  //TODO: VALIDAÇÃO DOS INPUTS
   const { register, handleSubmit } = useForm<LoginFormValues>();
   const router = useRouter();
 

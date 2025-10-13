@@ -1,21 +1,23 @@
 import Header from "@/components/Header";
 import SearchInput from "@/components/Search";
+
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { prisma } from "@/lib/prisma";
+import { CardContent } from "@/components/ui/card";
 
-const toolType = await prisma.toolType.findMany({
-  include: { tools: true },
-});
+import { getTools } from "@/actions/get-tools";
+import DialogTools from "./_components/DialogTools";
 
-const Tools = () => {
-  const conditionColors = {
+const Tools = async () => {
+  const toolType = await getTools();
+
+  const conditionBgColors = {
     NOVO: "bg-blue-400",
     USADO: "bg-yellow-400",
     QUEBRADO: "bg-red-400",
   };
   return (
+    //TODO: REACT QUERY PARA RELOAD AUTOMÁTICO
     <>
       <Header />
       <main className="pt-30 px-5 bg-gray-100 h-screen">
@@ -35,10 +37,10 @@ const Tools = () => {
                   <div className="flex flex-col gap-1">
                     <Badge
                       className={`rounded-full opacity-90  ${
-                        conditionColors[tool.condition]
+                        conditionBgColors[tool.condition]
                       }`}
                     >
-                      <span className="text-[12px] font-normal">
+                      <span className="text-[12px] font-normal  capitalize">
                         {tool.condition}
                       </span>
                     </Badge>
@@ -53,13 +55,7 @@ const Tools = () => {
                       {toolTypeItem.description}
                     </p>
                   </div>
-
-                  <Button
-                    disabled={tool.condition === "QUEBRADO"}
-                    variant="secondary"
-                  >
-                    Usar
-                  </Button>
+                  <DialogTools toolTypeItem={toolTypeItem} tool={tool} />
                 </div>
               ))
             )}

@@ -50,9 +50,11 @@ const Header = () => {
                     <p>Ferramentas</p>
                   </Link>
                 </Button>
-                <Button variant={"outline"} className="justify-start">
-                  <HandHelping className="size-5" />
-                  <p>Empréstimos</p>
+                <Button variant={"outline"} className="justify-start" asChild>
+                  <Link href="/loans">
+                    <HandHelping className="size-5" />
+                    <p>Empréstimos</p>
+                  </Link>
                 </Button>
                 <Button variant={"outline"} className="justify-start">
                   <History className="size-5" />
