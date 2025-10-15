@@ -1,6 +1,7 @@
 "use client";
 
 import { createLoan } from "@/actions/create-loan";
+import { returnLoan } from "@/actions/return-loan";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Tool, ToolType } from "@prisma/client";
+import { Loan, Tool, ToolType } from "@prisma/client";
 
 import { useState } from "react";
 import { toast } from "sonner";
@@ -18,9 +19,18 @@ import { toast } from "sonner";
 interface DialogToolsProps {
   toolTypeItem: ToolType;
   tool: Tool;
+  loan?: Loan;
+  title: string;
+  buttonName: string;
 }
 
-const DialogTools = ({ toolTypeItem, tool }: DialogToolsProps) => {
+const DialogTools = ({
+  toolTypeItem,
+  tool,
+  loan,
+  title,
+  buttonName,
+}: DialogToolsProps) => {
   const conditionTextColors = {
     NOVO: "text-blue-400",
     USADO: "text-yellow-400",
@@ -29,14 +39,27 @@ const DialogTools = ({ toolTypeItem, tool }: DialogToolsProps) => {
 
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
 
-  const handleCreateLoan = async (toolId: string) => {
-    try {
-      await createLoan(toolId);
-      toast.success("Você esta com a ferramenta");
-      setDialogIsOpen(false);
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao pegar ferramenta");
+  const id = loan ? loan.id : tool.id;
+
+  const handleLoan = async (id: string) => {
+    if (!loan) {
+      try {
+        await createLoan(id);
+        toast.success("Você esta com a ferramenta");
+        setDialogIsOpen(false);
+      } catch (error) {
+        console.error(error);
+        toast.error("Erro ao pegar ferramenta");
+      }
+    } else {
+      try {
+        await returnLoan(id);
+        toast.success("Você devolveu a ferramenta");
+        setDialogIsOpen(false);
+      } catch (error) {
+        console.error(error);
+        toast.error("Erro ao devolver a ferramenta");
+      }
     }
   };
   return (
@@ -46,12 +69,12 @@ const DialogTools = ({ toolTypeItem, tool }: DialogToolsProps) => {
         variant="secondary"
         onClick={() => setDialogIsOpen(true)}
       >
-        Usar
+        {buttonName}
       </Button>
       <Dialog open={dialogIsOpen} onOpenChange={() => setDialogIsOpen(false)}>
         <DialogContent className="w-[90%]">
           <DialogHeader>
-            <DialogTitle>Deseja pegar essa ferramenta emprestada?</DialogTitle>
+            <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
           <div className="flex justify-center">
             <h3 className="font-semibold">
@@ -72,7 +95,7 @@ const DialogTools = ({ toolTypeItem, tool }: DialogToolsProps) => {
           <DialogFooter className="flex flex-col items-center">
             <Button
               className="w-[80%] bg-blue-400 text-white"
-              onClick={() => handleCreateLoan(tool.id)}
+              onClick={() => handleLoan(id)}
             >
               Confirmar
             </Button>

@@ -1,4 +1,5 @@
 import { getLoans } from "@/actions/get-loans";
+import DialogTools from "@/components/DialogTools";
 import Header from "@/components/Header";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -56,6 +57,13 @@ const Loans = async () => {
                     {loan.tool.type.description}
                   </p>
                 </div>
+                <DialogTools
+                  toolTypeItem={loan.tool.type}
+                  tool={loan.tool}
+                  loan={loan}
+                  title="Deseja devolver essa ferramenta?"
+                  buttonName="Devolver"
+                />
               </div>
             ))}
           </CardContent>

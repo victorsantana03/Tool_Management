@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { CardContent } from "@/components/ui/card";
 
 import { getTools } from "@/actions/get-tools";
-import DialogTools from "./_components/DialogTools";
+import DialogTools from "../../components/DialogTools";
 
 const Tools = async () => {
   const toolType = await getTools();
@@ -55,7 +55,12 @@ const Tools = async () => {
                       {toolTypeItem.description}
                     </p>
                   </div>
-                  <DialogTools toolTypeItem={toolTypeItem} tool={tool} />
+                  <DialogTools
+                    toolTypeItem={toolTypeItem}
+                    tool={tool}
+                    title="Deseja pegar essa ferramenta emprestada?"
+                    buttonName="Usar"
+                  />
                 </div>
               ))
             )}
