@@ -56,9 +56,11 @@ const Header = () => {
                     <p>Empréstimos</p>
                   </Link>
                 </Button>
-                <Button variant={"outline"} className="justify-start">
-                  <History className="size-5" />
-                  <p>Histórico</p>
+                <Button variant={"outline"} className="justify-start" asChild>
+                  <Link href="/history">
+                    <History className="size-5" />
+                    <p>Histórico</p>
+                  </Link>
                 </Button>
               </div>
               <SheetFooter>

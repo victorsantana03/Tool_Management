@@ -10,7 +10,7 @@ const Loans = async () => {
   const user = await getUserFromToken();
 
   if (!user) {
-    redirect("/");
+    redirect("/login");
   }
 
   const loans = await getLoans(user?.id);
