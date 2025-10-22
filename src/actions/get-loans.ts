@@ -10,6 +10,7 @@ export async function getLoans(userId: string) {
   const loan = await prisma.loan.findMany({
     where: { userId, status: "EMPRESTADO" },
     include: { tool: { include: { type: true } } },
+    orderBy: { startDate: "desc" },
   });
 
   return loan;
