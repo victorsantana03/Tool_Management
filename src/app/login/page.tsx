@@ -71,7 +71,8 @@ const Login = () => {
 
             <Button className="w-full">Entrar</Button>
           </form>
-          <div className="text-center mt-4">
+          <div className="text-center mt-2">
+            <p className="font-semibold text-sm">ou</p>
             <Link
               href="/register"
               className="text-blue-400 underline cursor-pointer "

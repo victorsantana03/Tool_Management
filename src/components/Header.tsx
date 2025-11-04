@@ -7,40 +7,49 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { getUserFromToken } from "@/lib/auth";
 import {
   HandHelping,
   History,
   HomeIcon,
+  LayoutDashboard,
   MenuIcon,
   PowerOffIcon,
   ToolCase,
   User2Icon,
 } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-const Header = () => {
+const Header = async () => {
+  const user = await getUserFromToken();
+  if (!user) {
+    redirect("/login");
+  }
   return (
     <header className="fixed w-full z-50">
       <Card className="rounded-none">
         <CardContent className="flex justify-between">
           <h2 className="text-2xl font-bold text-blue-500">GestãoMáquinas</h2>
-          <div className="flex items-center gap-2">
-            <User2Icon />
-            <p className="text-gray-400 font-semibold">Victor Alves...</p>
-          </div>
 
           <Sheet>
+            <SheetTitle></SheetTitle>
             <SheetTrigger asChild>
               <Button variant={"outline"}>
                 <MenuIcon />
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[45%] px-2">
-              <SheetTitle></SheetTitle>
               <div className="mt-30 flex flex-col gap-5">
+                <div className="flex items-center gap-4">
+                  <User2Icon />
+                  <p className="text-gray-400 font-semibold text-sm truncate">
+                    {user.email}
+                  </p>
+                </div>
                 <Button variant={"outline"} className="justify-start" asChild>
                   <Link href="/">
-                    <HomeIcon className="size-5" />
+                    <LayoutDashboard className="size-5" />
                     <p>Dashboard</p>
                   </Link>
                 </Button>
