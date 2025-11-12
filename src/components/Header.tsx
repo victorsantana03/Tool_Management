@@ -11,7 +11,6 @@ import { getUserFromToken } from "@/lib/auth";
 import {
   HandHelping,
   History,
-  HomeIcon,
   LayoutDashboard,
   MenuIcon,
   PowerOffIcon,

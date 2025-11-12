@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CardContent } from "@/components/ui/card";
 
-import { getTools } from "@/actions/get-tools";
+import { getTools } from "@/data/get-tools";
 import DialogTools from "../../components/DialogTools";
 
 const Tools = async () => {
