@@ -1,5 +1,6 @@
-import { getLoans } from "@/actions/get-loans";
-import { getToolsOverview } from "@/actions/get-tools-overview";
+import { getLoans } from "@/data/get-loans";
+import { getToolsOverview } from "@/data/get-tools-overview";
+import { getUsersOverview } from "@/data/get-users-overview";
 import Header from "@/components/Header";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,7 +8,7 @@ import { getUserFromToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { LayoutDashboard, ToolCase } from "lucide-react";
+import { LayoutDashboard, ToolCase, User2Icon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -33,6 +34,8 @@ export default async function Home() {
 
   const { available, brokenTools, toolsInUse, totalTools } =
     await getToolsOverview();
+
+  const usersOverview = await getUsersOverview();
   return (
     <>
       <Header />
@@ -166,33 +169,49 @@ export default async function Home() {
         {/*VISÃO GERAL FERRAMENTAS*/}
         <div className="mt-5 px-5">
           <h3 className="font-bold text-gray-500 pb-2">Visão geral</h3>
-          <Card className="max-w-[200px]">
-            <CardContent>
-              <div className="flex items-center gap-2 pb-2">
-                <h3 className="text-lg font-semibold">Ferramentas</h3>
-                <ToolCase className="size-5" />
-              </div>
+          <div className="flex justify-between">
+            <Card className="max-w-[155px] p-2">
+              <CardContent className="p-2">
+                <div className="flex items-center gap-2 pb-2">
+                  <h3 className="text-lg font-semibold">Ferramentas</h3>
+                  <ToolCase className="size-5" />
+                </div>
 
-              <div>
-                <p className="font-semibold">
-                  <span className="font-bold text-lg">{totalTools}</span>{" "}
-                  disponibilizadas
-                </p>
-                <p className=" font-semibold text-yellow-400">
-                  <span className="font-bold text-lg ">{toolsInUse}</span> em
-                  uso
-                </p>
-                <p className="text-red-400 font-semibold">
-                  <span className="font-bold text-lg">{brokenTools}</span>{" "}
-                  danificadas
-                </p>
-                <p className="text-blue-400 font-semibold">
-                  <span className="font-bol text-lg">{available}</span>{" "}
-                  disponíveis
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+                <div>
+                  <p className="font-semibold">
+                    <span className="font-bold text-lg">{totalTools}</span>{" "}
+                    total
+                  </p>
+                  <p className=" font-semibold text-yellow-400">
+                    <span className="font-bold text-lg ">{toolsInUse}</span> em
+                    uso
+                  </p>
+                  <p className="text-red-400 font-semibold">
+                    <span className="font-bold text-lg">{brokenTools}</span>{" "}
+                    danificadas
+                  </p>
+                  <p className="text-blue-400 font-semibold">
+                    <span className="font-bol text-lg">{available}</span>{" "}
+                    disponíveis
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="p-2 max-w-[155px]">
+              <CardContent className="p-2">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-semibold">Colaboradores</h3>
+                  <User2Icon className="size-5" />
+                </div>
+
+                <div className="flex flex-col justify-center items-center">
+                  <p className="font-semibold text-7xl">{usersOverview}</p>
+                  <p className="text-gray-400 font-semibold">nesse serviço</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </main>
     </>
