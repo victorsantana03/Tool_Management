@@ -7,24 +7,25 @@ import { CardContent } from "@/components/ui/card";
 
 import { getTools } from "@/data/get-tools";
 import DialogTools from "../../components/DialogTools";
-
+import { conditionBgColors } from "@/constants/conditionColors";
+import { getUserFromToken } from "@/lib/auth";
+import { redirect } from "next/navigation";
 const Tools = async () => {
+  const user = await getUserFromToken();
+  if (!user) {
+    redirect("/login");
+  }
   const toolType = await getTools();
 
-  const conditionBgColors = {
-    NOVO: "bg-blue-400",
-    USADO: "bg-yellow-400",
-    QUEBRADO: "bg-red-400",
-  };
   return (
     <div>
       <Header />
-      <main className="pt-30 px-5 bg-gray-100 h-screen">
+      <main className="pt-30 pb-10 px-5 bg-gray-100 min-h-screen">
         <h1 className="font-bold text-2xl text-blue-500 pb-5">Ferramentas</h1>
         <div className="pb-5">
           <SearchInput />
         </div>
-        <Card className="mb-5">
+        <Card>
           <CardContent className="space-y-2 px-3">
             {toolType.map((toolTypeItem) =>
               toolTypeItem.tools.map((tool) => (

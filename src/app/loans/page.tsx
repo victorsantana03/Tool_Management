@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { getUserFromToken } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { conditionBgColors } from "@/constants/conditionColors";
 
 const Loans = async () => {
   const user = await getUserFromToken();
@@ -15,16 +16,10 @@ const Loans = async () => {
 
   const loans = await getLoans(user?.id);
 
-  const conditionBgColors = {
-    NOVO: "bg-blue-400",
-    USADO: "bg-yellow-400",
-    QUEBRADO: "bg-red-400",
-  };
-
   return (
     <>
       <Header />
-      <main className="pt-30 px-5">
+      <main className="pt-30 px-5 bg-gray-100 min-h-screen">
         <h1 className="font-bold text-2xl text-blue-500 pb-5">
           Meus empréstimos
         </h1>
@@ -37,20 +32,23 @@ const Loans = async () => {
                 className="flex justify-between items-center border-b py-2 gap-4"
               >
                 <div className="flex flex-col gap-1">
-                  <Badge
-                    className={`rounded-full opacity-90  ${
-                      conditionBgColors[loan.tool.condition]
-                    }`}
-                  >
-                    <span className="text-[12px] font-normal  capitalize">
-                      {loan.tool.condition}
-                    </span>
-                  </Badge>
-                  <div className="flex gap-2">
-                    <h3 className="font-semibold">{loan.tool.type.name}</h3>
-                    <Badge className="bg-gray-300 rounded-full">
-                      {loan.tool.type.brand}
+                  <div className="flex items-center gap-1">
+                    <Badge
+                      className={`rounded-full opacity-90  ${
+                        conditionBgColors[loan.tool.condition]
+                      }`}
+                    >
+                      <span className="text-[12px] font-normal  capitalize">
+                        {loan.tool.condition}
+                      </span>
                     </Badge>
+                    <div className="bg-gray-300 rounded-full w-min h-min px-2 text-xs text-white">
+                      {loan.tool.type.brand}
+                    </div>
+                  </div>
+
+                  <div className="max-w-[130px]">
+                    <h3 className="font-semibold ">{loan.tool.type.name}</h3>
                   </div>
 
                   <p className="text-gray-500 text-sm">

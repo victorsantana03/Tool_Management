@@ -40,7 +40,7 @@ const Header = async () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-[45%] px-2">
               <div className="mt-30 flex flex-col gap-5">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                   <User2Icon />
                   <p className="text-gray-400 font-semibold text-sm truncate">
                     {user.email}

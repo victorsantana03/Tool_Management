@@ -5,32 +5,24 @@ import Header from "@/components/Header";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { getUserFromToken } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { LayoutDashboard, ToolCase, User2Icon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { conditionBgColors } from "@/constants/conditionColors";
+import { getLoansHistory } from "@/data/get-loans-history";
 
 export default async function Home() {
   const user = await getUserFromToken();
+
   if (!user) {
     redirect("/login");
   }
 
-  const loans = await getLoans(user?.id);
+  const loans = await getLoans(user.id);
 
-  const history = await prisma.loan.findMany({
-    where: { userId: user.id, status: "DEVOLVIDO" },
-    include: { tool: { include: { type: true } } },
-    orderBy: { endDate: "desc" },
-  });
-
-  const conditionBgColors = {
-    NOVO: "bg-blue-400",
-    USADO: "bg-yellow-400",
-    QUEBRADO: "bg-red-400",
-  };
+  const history = await getLoansHistory(user.id);
 
   const { available, brokenTools, toolsInUse, totalTools } =
     await getToolsOverview();
@@ -40,7 +32,7 @@ export default async function Home() {
     <>
       <Header />
 
-      <main className="pt-30  bg-gray-100 h-screen">
+      <main className="pt-30 pb-10 bg-gray-100 min-h-screen">
         <div className="px-5 mb-7">
           <h3 className="text-xl text-gray-600 font-semibold">
             Olá, {user?.name}!
@@ -96,9 +88,7 @@ export default async function Home() {
                       </p>
                     </div>
                     <div className="flex flex-col items-center">
-                      <h3 className="font-semibold text-gray-500">
-                        Você pegou:
-                      </h3>
+                      <h3 className="font-semibold text-gray-500">Pego em:</h3>
                       <p className="text-gray-500">
                         {format(new Date(loan.startDate), "dd/MM/yyyy", {
                           locale: ptBR,
@@ -169,10 +159,10 @@ export default async function Home() {
         {/*VISÃO GERAL FERRAMENTAS*/}
         <div className="mt-5 px-5">
           <h3 className="font-bold text-gray-500 pb-2">Visão geral</h3>
-          <div className="flex justify-between">
-            <Card className="max-w-[155px] p-2">
+          <div className="flex justify-between gap-1">
+            <Card className="max-w-[160px] p-2">
               <CardContent className="p-2">
-                <div className="flex items-center gap-2 pb-2">
+                <div className="flex items-center gap-1 pb-2">
                   <h3 className="text-lg font-semibold">Ferramentas</h3>
                   <ToolCase className="size-5" />
                 </div>
@@ -198,10 +188,10 @@ export default async function Home() {
               </CardContent>
             </Card>
 
-            <Card className="p-2 max-w-[155px]">
+            <Card className="p-2 max-w-[160px]">
               <CardContent className="p-2">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold">Colaboradores</h3>
+                <div className="flex items-center gap-1 pb-2">
+                  <h3 className="font-semibold">Colaboradores</h3>
                   <User2Icon className="size-5" />
                 </div>
 
