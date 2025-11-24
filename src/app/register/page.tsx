@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { toast } from "sonner";
 
+import { useRouter } from "next/navigation";
+
 type RegisterFormValues = {
   name: string;
   email: string;
@@ -17,6 +19,7 @@ type RegisterFormValues = {
 const Register = () => {
   //TODO: QUANDO ESTIVER LOGADO NÃO PODE ACESSAR ESSA PAGE
   const { register, handleSubmit } = useForm<RegisterFormValues>();
+  const router = useRouter();
 
   const onSubmit = async (data: RegisterFormValues) => {
     try {
@@ -35,6 +38,7 @@ const Register = () => {
       }
 
       toast.success(body.message);
+      router.push("/");
     } catch (error) {
       console.error(error);
     }

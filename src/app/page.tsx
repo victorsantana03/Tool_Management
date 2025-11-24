@@ -56,106 +56,142 @@ export default async function Home() {
           <LayoutDashboard className="size-5 " />
         </div>
 
+        {/*FERRAMENTAS EM USO*/}
         <div className="pl-5 pr-1">
           <h3 className="font-bold text-gray-500 pb-2">Ferramentas em uso</h3>
-          <div className="flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
-            {loans.map((loan) => (
-              <Card key={loan.id} className="py-4 min-w-[90%]">
-                <Link href="/loans">
+
+          {loans.length > 0 ? (
+            <div className="flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+              {loans.map((loan) => (
+                <Card key={loan.id} className="py-4 min-w-[90%]">
+                  <Link href="/loans">
+                    <CardContent className="flex justify-between items-center px-3">
+                      <div className="flex flex-col gap-1 max-w-[70%]">
+                        <div className="flex items-center gap-1">
+                          <Badge
+                            className={`rounded-full opacity-90  ${
+                              conditionBgColors[loan.tool.condition]
+                            }`}
+                          >
+                            <span className="text-[12px] font-normal  capitalize">
+                              {loan.tool.condition}
+                            </span>
+                          </Badge>
+                          <div className="bg-gray-300 rounded-full w-min h-min px-2 text-xs text-white">
+                            {loan.tool.type.brand}
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2">
+                          <h3 className="font-semibold">
+                            {loan.tool.type.name}
+                          </h3>
+                        </div>
+
+                        <p className="text-gray-500 text-sm truncate">
+                          {loan.tool.type.description}
+                        </p>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <h3 className="font-semibold text-gray-500">
+                          Pego em:
+                        </h3>
+                        <p className="text-gray-500">
+                          {format(new Date(loan.startDate), "dd/MM/yyyy", {
+                            locale: ptBR,
+                          })}
+                        </p>
+                        <p className="text-gray-500">
+                          {format(new Date(loan.startDate), "HH:mm", {
+                            locale: ptBR,
+                          })}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="min-w-[100%] pr-4">
+              <Card>
+                <CardContent className="text-center">
+                  <p className="font-semibold text-blue-400">
+                    Nenhuma ferramenta para exibir
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </div>
+
+        {/*USADAS ANTERIORMENTE*/}
+        <div className="pl-5 pr-1 pt-5">
+          <h3 className="font-bold text-gray-500 pb-2">Usadas anteriormente</h3>
+
+          {history.length > 0 ? (
+            <div className="flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+              {history.map((historyItem) => (
+                <Card key={historyItem.id} className="py-4 min-w-[90%]">
                   <CardContent className="flex justify-between items-center px-3">
                     <div className="flex flex-col gap-1 max-w-[70%]">
                       <div className="flex items-center gap-1">
                         <Badge
                           className={`rounded-full opacity-90  ${
-                            conditionBgColors[loan.tool.condition]
+                            conditionBgColors[historyItem.tool.condition]
                           }`}
                         >
                           <span className="text-[12px] font-normal  capitalize">
-                            {loan.tool.condition}
+                            {historyItem.tool.condition}
                           </span>
                         </Badge>
                         <div className="bg-gray-300 rounded-full w-min h-min px-2 text-xs text-white">
-                          {loan.tool.type.brand}
+                          {historyItem.tool.type.brand}
                         </div>
                       </div>
 
                       <div className="flex gap-2">
-                        <h3 className="font-semibold">{loan.tool.type.name}</h3>
+                        <h3 className="font-semibold">
+                          {historyItem.tool.type.name}
+                        </h3>
                       </div>
 
                       <p className="text-gray-500 text-sm truncate">
-                        {loan.tool.type.description}
+                        {historyItem.tool.type.description}
                       </p>
                     </div>
                     <div className="flex flex-col items-center">
-                      <h3 className="font-semibold text-gray-500">Pego em:</h3>
+                      <h3 className="font-semibold text-gray-500">
+                        Devolvido:
+                      </h3>
                       <p className="text-gray-500">
-                        {format(new Date(loan.startDate), "dd/MM/yyyy", {
+                        {format(new Date(historyItem.endDate!), "dd/MM/yyyy", {
                           locale: ptBR,
                         })}
                       </p>
                       <p className="text-gray-500">
-                        {format(new Date(loan.startDate), "HH:mm", {
+                        {format(new Date(historyItem.endDate!), "HH:mm", {
                           locale: ptBR,
                         })}
                       </p>
                     </div>
                   </CardContent>
-                </Link>
-              </Card>
-            ))}
-          </div>
-        </div>
-        <div className="pl-5 pr-1 pt-5">
-          <h3 className="font-bold text-gray-500 pb-2">Usadas anteriormente</h3>
-          <div className="flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
-            {history.map((historyItem) => (
-              <Card key={historyItem.id} className="py-4 min-w-[90%]">
-                <CardContent className="flex justify-between items-center px-3">
-                  <div className="flex flex-col gap-1 max-w-[70%]">
-                    <div className="flex items-center gap-1">
-                      <Badge
-                        className={`rounded-full opacity-90  ${
-                          conditionBgColors[historyItem.tool.condition]
-                        }`}
-                      >
-                        <span className="text-[12px] font-normal  capitalize">
-                          {historyItem.tool.condition}
-                        </span>
-                      </Badge>
-                      <div className="bg-gray-300 rounded-full w-min h-min px-2 text-xs text-white">
-                        {historyItem.tool.type.brand}
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <h3 className="font-semibold">
-                        {historyItem.tool.type.name}
-                      </h3>
-                    </div>
-
-                    <p className="text-gray-500 text-sm truncate">
-                      {historyItem.tool.type.description}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <h3 className="font-semibold text-gray-500">Devolvido:</h3>
-                    <p className="text-gray-500">
-                      {format(new Date(historyItem.endDate!), "dd/MM/yyyy", {
-                        locale: ptBR,
-                      })}
-                    </p>
-                    <p className="text-gray-500">
-                      {format(new Date(historyItem.endDate!), "HH:mm", {
-                        locale: ptBR,
-                      })}
-                    </p>
-                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="min-w-[100%] pr-4">
+              <Card>
+                <CardContent className="text-center">
+                  <p className="font-semibold text-blue-400">
+                    Sem históricos no momento
+                  </p>
                 </CardContent>
               </Card>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
+
         {/*VISÃO GERAL FERRAMENTAS*/}
         <div className="mt-5 px-5">
           <h3 className="font-bold text-gray-500 pb-2">Visão geral</h3>
